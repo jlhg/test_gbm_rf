@@ -94,8 +94,8 @@ if __name__ == '__main__':
     gbm_clf = GradientBoostingRegressor(**gbm_params)
 
     if is_userdefined:
-        gbm_clf.fit(X_train, zip(*y_train)[0])  # Outcom of first month in y_train
-        gbm_mse = mean_squared_error(zip(*y_test)[0], gbm_clf.predict(X_test))  # Outcom of first month in y_test
+        gbm_clf.fit(X_train, zip(*y_train)[0])  # Outcome of first month in y_train
+        gbm_mse = mean_squared_error(zip(*y_test)[0], gbm_clf.predict(X_test))  # Outcome of first month in y_test
     else:
         gbm_clf.fit(X_train, y_train)
         gbm_mse = mean_squared_error(y_test, gbm_clf.predict(X_test))
