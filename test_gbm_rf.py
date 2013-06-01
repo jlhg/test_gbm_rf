@@ -42,8 +42,8 @@ def csv_to_array(handle):
 
             for i, item in enumerate(data):
                 if item == 'NaN':
-                    # data[i] = np.nan
-                    data[i] = 0
+                    data[i] = np.nan
+                    # data[i] = 0
                 else:
                     try:
                         data[i] = float(item)
