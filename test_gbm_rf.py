@@ -42,8 +42,8 @@ def csv_to_array(handle):
 
             for i, item in enumerate(data):
                 if item == 'NaN':
-                    data[i] = np.nan
-                    # data[i] = 0
+                    # data[i] = np.nan
+                    data[i] = 0
                 else:
                     try:
                         data[i] = float(item)
@@ -54,7 +54,7 @@ def csv_to_array(handle):
                 # is training data
                 X_train.append(data[13:])
                 y_train.append(data[1:13])
-            elif data[0] == 0:
+            else:
                 # is testing data
                 X_test.append(data[13:])
                 y_test.append(data[1:13])
@@ -73,10 +73,12 @@ if __name__ == '__main__':
     import sys
 
     # Load data
+    is_userdefined = False
     if len(sys.argv) == 1:
         print('Load sample data...')
         X_train, X_test, y_train, y_test = make_sample()
     else:
+        is_userdefined = True
         print('Load file: \'{}\''.format(sys.argv[1]))
         X_train, X_test, y_train, y_test = csv_to_array(sys.argv[1])
 
@@ -90,8 +92,13 @@ if __name__ == '__main__':
     }
 
     gbm_clf = GradientBoostingRegressor(**gbm_params)
-    gbm_clf.fit(X_train, y_train)
-    gbm_mse = mean_squared_error(y_test, gbm_clf.predict(X_test))
+
+    if is_userdefined:
+        gbm_clf.fit(X_train, zip(*y_train)[0])  # Outcom of first month in y_train
+        gbm_mse = mean_squared_error(zip(*y_test)[0], gbm_clf.predict(X_test))  # Outcom of first month in y_test
+    else:
+        gbm_clf.fit(X_train, y_train)
+        gbm_mse = mean_squared_error(y_test, gbm_clf.predict(X_test))
 
     print('GBM Regressor MSE: {:.4f}'.format(gbm_mse))
 
